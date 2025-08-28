@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.kdz2026.dao.CourseMapper">
+
+    <!-- 关联查询课程和教练信息 -->
+    <select id="findAllWithCoachName" resultType="com.situ.kdz2026.model.Course">
+        SELECT
+        c.id,
+        c.name as name,
+        c.begin as begin,
+        c.length as length,
+        c.max_count as maxCount,
+        c.room as room,
+        c.avatar as avatar,
+        c.coach_id as coachId,
+        ch.name as coachName
+        FROM course c
+        LEFT JOIN coach ch ON c.coach_id = ch.id
+        <where>
+            <if test="csb != null">
+                <if test="csb.name != null and csb.name != ''">
+                    AND c.name LIKE CONCAT('%', #{csb.name}, '%')
+                </if>
+                <if test="csb.beginTime != null">
+                    AND c.begin >= #{csb.beginTime}
+                </if>
+                <if test="csb.endTime != null">
+                    AND c.begin &lt; #{csb.endTime}
+                </if>
+            </if>
+        </where>
+        ORDER BY c.id DESC
+    </select>
+
+</mapper>

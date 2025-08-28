@@ -1,0 +1,69 @@
+spring:
+  mail:
+    host: smtp.qq.com
+    username: 你的qq
+    password: 你的smtp密钥
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connection timeout: 5000
+          timeout: 5000
+          write timeout: 5000
+
+  application:
+    name: kdz2026
+
+  #配置数据库
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/stl?characterEncoding=UTF-8&useSSL=false&autoReconnect=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 数据库密码
+
+  #配置redis
+  web:
+    resources:
+      static-locations: classpath:/resources/, classpath:/static/, file:/${upload.location}
+  data:
+    redis:
+      password: redis的密码
+   #配置deep seek
+  ai:
+    openai:
+      api-key: 你的deep seek的api密钥
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+
+
+#mybatis-plus
+mybatis-plus:
+  configuration:
+    log-prefix: mybatis.
+    log-impl: org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl
+    map-underscore-to-camel-case: true
+    lazy-loading-enabled: true
+    cache-enabled: false
+  type-aliases-package: com.situ.kdz2026.model
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+server:
+  port: 8080
+
+#日志
+logging:
+  level:
+    mybatis: debug
+
+
+#上传文件
+upload:
+  location: E:\situ\work\8.13\kdz2026\src\main\resources\upload
+
+jwt:
+  secret: qxlF8NsSqFeUVR1+eswPvoo9Ff7bJbetNCjGepqaBGWEEDtEaCFGTcaWhjMUIgix

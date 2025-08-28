@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+            PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.kdz2026.dao.ReserveMapper">
+    <select id="findAllReservation" resultType="com.situ.kdz2026.model.Reserve">
+        SELECT DISTINCT
+        r.id,
+        r.name AS name,
+        r.course AS course,
+        co.name AS coach,
+        r.create_time AS createTime,
+        r.length,
+        r.reserve_time AS reserveTime,
+        r.score,
+        r.recommend,
+        r.evaluate_time AS evaluateTime,
+        r.status
+        FROM reservation r
+        LEFT JOIN course c
+        ON c.name = r.course
+        LEFT JOIN coach co
+        ON co.id = c.coach_id
+        <where>
+            <if test="csb != null">
+                <if test="csb.name != null and csb.name != ''">
+                    AND r.name LIKE CONCAT('%', #{csb.name}, '%')
+                </if>
+                <if test="csb.course != null and csb.course != ''">
+                    AND r.course LIKE CONCAT('%', #{csb.course}, '%')
+                </if>
+                <if test="csb.reserveFrom != null">
+                    AND r.reserve_time >= #{csb.reserveFrom}
+                </if>
+                <if test="csb.reserveTo != null">
+                    AND r.reserve_time &lt; DATE_ADD(#{csb.reserveTo}, INTERVAL 1 DAY)
+                </if>
+            </if>
+        </where>
+        ORDER BY r.id DESC
+    </select>
+
+    <select id="findReservation" resultType="com.situ.kdz2026.model.Reserve">
+        SELECT DISTINCT
+        r.id,
+        r.name AS name,
+        r.course AS course,
+        co.name AS coach,
+        r.create_time AS createTime,
+        r.length,
+        r.reserve_time AS reserveTime,
+        r.score,
+        r.recommend,
+        r.evaluate_time AS evaluateTime,
+        r.status
+        FROM reservation r
+        LEFT JOIN course c
+        ON c.name = r.course
+        LEFT JOIN coach co
+        ON co.id = c.coach_id
+        <where>
+            <if test="asd != null">
+                <if test="asd.name != null and asd.name != ''">
+                    AND r.name LIKE CONCAT('%', #{asd.name}, '%')
+                </if>
+                <if test="asd.course != null and asd.course != ''">
+                    AND r.course LIKE CONCAT('%', #{asd.course}, '%')
+                </if>
+                <if test="asd.reserveFrom != null">
+                    AND r.reserve_time >= #{asd.reserveFrom}
+                </if>
+                <if test="asd.reserveTo != null">
+                    AND r.reserve_time &lt; DATE_ADD(#{asd.reserveTo}, INTERVAL 1 DAY)
+                </if>
+            </if>
+        AND r.status = 1
+        </where>
+        ORDER BY r.id DESC
+    </select>
+
+</mapper>
+    
